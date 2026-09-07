@@ -1,12 +1,16 @@
+using System.Collections.ObjectModel;
 using MauiAppMinhasCompras.Models;
 
 namespace MauiAppMinhasCompras.Views;
 
 public partial class ListaProduto : ContentPage
 {
+    readonly ObservableCollection<Produto> _produtos = new();
+
     public ListaProduto()
     {
         InitializeComponent();
+        ProdutosCollection.ItemsSource = _produtos;
     }
 
     protected override async void OnAppearing()
@@ -17,12 +21,19 @@ public partial class ListaProduto : ContentPage
 
     async Task CarregarProdutos()
     {
-        ProdutosCollection.ItemsSource = await App.Db.GetAll();
+        AtualizarColecao(await App.Db.GetAll());
     }
 
     async void BuscaBar_TextChanged(object sender, TextChangedEventArgs e)
     {
-        ProdutosCollection.ItemsSource = await App.Db.Search(e.NewTextValue ?? "");
+        AtualizarColecao(await App.Db.Search(e.NewTextValue ?? ""));
+    }
+
+    void AtualizarColecao(List<Produto> produtos)
+    {
+        _produtos.Clear();
+        foreach (var produto in produtos)
+            _produtos.Add(produto);
     }
 
     async void Novo_Clicked(object sender, EventArgs e)
