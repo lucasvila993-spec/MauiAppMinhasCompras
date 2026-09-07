@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiAppMinhasCompras.Views.EditarProduto"
+             Title="Editar Produto">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="14">
+            <Label Text="Editar Produto"
+                   FontSize="26"
+                   FontAttributes="Bold" />
+
+            <Label Text="Descrição" />
+            <Entry x:Name="DescricaoEntry" />
+
+            <Label Text="Quantidade" />
+            <Entry x:Name="QuantidadeEntry"
+                   Keyboard="Numeric" />
+
+            <Label Text="Preço" />
+            <Entry x:Name="PrecoEntry"
+                   Keyboard="Numeric" />
+
+            <Button Text="Salvar alterações"
+                    Clicked="Salvar_Clicked"
+                    HeightRequest="50" />
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
