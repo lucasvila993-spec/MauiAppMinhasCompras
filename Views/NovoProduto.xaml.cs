@@ -41,8 +41,15 @@ public partial class NovoProduto : ContentPage
             Preco = preco
         };
 
-        await App.Db.Insert(produto);
-        await DisplayAlert("Sucesso", "Produto cadastrado.", "OK");
-        await Navigation.PopAsync();
+        try
+        {
+            await App.Db.Insert(produto);
+            await DisplayAlert("Sucesso", "Produto cadastrado.", "OK");
+            await Navigation.PopAsync();
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlert("Ops", ex.Message, "OK");
+        }
     }
 }

@@ -46,8 +46,15 @@ public partial class EditarProduto : ContentPage
         _produto.Quantidade = quantidade;
         _produto.Preco = preco;
 
-        await App.Db.Update(_produto);
-        await DisplayAlert("Sucesso", "Produto atualizado.", "OK");
-        await Navigation.PopAsync();
+        try
+        {
+            await App.Db.Update(_produto);
+            await DisplayAlert("Sucesso", "Produto atualizado.", "OK");
+            await Navigation.PopAsync();
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlert("Ops", ex.Message, "OK");
+        }
     }
 }

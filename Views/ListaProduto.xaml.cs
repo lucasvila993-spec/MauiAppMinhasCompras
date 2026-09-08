@@ -21,12 +21,26 @@ public partial class ListaProduto : ContentPage
 
     async Task CarregarProdutos()
     {
-        AtualizarColecao(await App.Db.GetAll());
+        try
+        {
+            AtualizarColecao(await App.Db.GetAll());
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlert("Ops", ex.Message, "OK");
+        }
     }
 
     async void BuscaBar_TextChanged(object sender, TextChangedEventArgs e)
     {
-        AtualizarColecao(await App.Db.Search(e.NewTextValue ?? ""));
+        try
+        {
+            AtualizarColecao(await App.Db.Search(e.NewTextValue ?? ""));
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlert("Ops", ex.Message, "OK");
+        }
     }
 
     void AtualizarColecao(List<Produto> produtos)
@@ -60,8 +74,15 @@ public partial class ListaProduto : ContentPage
             if (!confirmar)
                 return;
 
-            await App.Db.Delete(produto.Id);
-            await CarregarProdutos();
+            try
+            {
+                await App.Db.Delete(produto.Id);
+                await CarregarProdutos();
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Ops", ex.Message, "OK");
+            }
         }
     }
 }
