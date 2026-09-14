@@ -8,6 +8,8 @@ public partial class NovoProduto : ContentPage
     public NovoProduto()
     {
         InitializeComponent();
+        CategoriaPicker.ItemsSource = Categorias.Lista;
+        CategoriaPicker.SelectedIndex = 0;
     }
 
     async void Salvar_Clicked(object sender, EventArgs e)
@@ -38,7 +40,8 @@ public partial class NovoProduto : ContentPage
         {
             Descricao = descricao,
             Quantidade = quantidade,
-            Preco = preco
+            Preco = preco,
+            Categoria = CategoriaPicker.SelectedItem as string ?? "Outros"
         };
 
         try

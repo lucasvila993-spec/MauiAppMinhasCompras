@@ -5,10 +5,11 @@
              Title="Minhas Compras">
 
     <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Relatório" Clicked="Relatorio_Clicked" />
         <ToolbarItem Text="Novo" Clicked="Novo_Clicked" />
     </ContentPage.ToolbarItems>
 
-    <Grid Padding="16" RowDefinitions="Auto,Auto,*">
+    <Grid Padding="16" RowDefinitions="Auto,Auto,Auto,*">
         <Label Text="Minhas Compras"
                FontSize="28"
                FontAttributes="Bold"
@@ -18,9 +19,15 @@
                    x:Name="BuscaBar"
                    Placeholder="Pesquisar produto..."
                    TextChanged="BuscaBar_TextChanged"
-                   Margin="0,0,0,12" />
+                   Margin="0,0,0,8" />
 
-        <CollectionView Grid.Row="2"
+        <Picker Grid.Row="2"
+                x:Name="CategoriaPicker"
+                Title="Filtrar por categoria"
+                SelectedIndexChanged="CategoriaPicker_SelectedIndexChanged"
+                Margin="0,0,0,12" />
+
+        <CollectionView Grid.Row="3"
                         x:Name="ProdutosCollection"
                         SelectionMode="None">
             <CollectionView.EmptyView>
@@ -41,25 +48,35 @@
                             BackgroundColor="White"
                             Padding="12"
                             Margin="0,0,0,10">
-                        <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto,Auto">
+                        <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto,Auto,Auto">
                             <Label Text="{Binding Descricao}"
                                    FontSize="19"
                                    FontAttributes="Bold"
                                    TextColor="#212121" />
 
                             <Label Grid.Row="1"
+                                   Text="{Binding Categoria}"
+                                   FontSize="12"
+                                   FontAttributes="Bold"
+                                   TextColor="White"
+                                   BackgroundColor="#512BD4"
+                                   Padding="8,2"
+                                   HorizontalOptions="Start"
+                                   Margin="0,4,0,0" />
+
+                            <Label Grid.Row="2"
                                    Text="{Binding Quantidade, StringFormat='Quantidade: {0:N2}'}"
                                    TextColor="#666666"
                                    Margin="0,4,0,0" />
 
-                            <Label Grid.Row="2"
+                            <Label Grid.Row="3"
                                    Text="{Binding Preco, StringFormat='Preço: R$ {0:N2}'}"
                                    TextColor="#512BD4"
                                    FontAttributes="Bold"
                                    Margin="0,4,0,0" />
 
                             <VerticalStackLayout Grid.Column="1"
-                                                 Grid.RowSpan="3"
+                                                 Grid.RowSpan="4"
                                                  Spacing="6">
                                 <Button Text="Editar"
                                         Clicked="Editar_Clicked"

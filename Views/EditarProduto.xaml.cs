@@ -16,6 +16,10 @@ public partial class EditarProduto : ContentPage
         DescricaoEntry.Text = produto.Descricao;
         QuantidadeEntry.Text = produto.Quantidade.ToString(CultureInfo.CurrentCulture);
         PrecoEntry.Text = produto.Preco.ToString("N2", CultureInfo.CurrentCulture);
+
+        CategoriaPicker.ItemsSource = Categorias.Lista;
+        int index = Array.IndexOf(Categorias.Lista, produto.Categoria);
+        CategoriaPicker.SelectedIndex = index >= 0 ? index : Categorias.Lista.Length - 1;
     }
 
     async void Salvar_Clicked(object sender, EventArgs e)
@@ -45,6 +49,7 @@ public partial class EditarProduto : ContentPage
         _produto.Descricao = descricao;
         _produto.Quantidade = quantidade;
         _produto.Preco = preco;
+        _produto.Categoria = CategoriaPicker.SelectedItem as string ?? "Outros";
 
         try
         {

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiAppMinhasCompras.Views.RelatorioCategoria"
+             Title="Relatório por Categoria">
+
+    <Grid Padding="16" RowDefinitions="Auto,Auto,*">
+        <Label Text="Gastos por Categoria"
+               FontSize="26"
+               FontAttributes="Bold"
+               Margin="0,0,0,4" />
+
+        <Label Grid.Row="1"
+               x:Name="TotalGeralLabel"
+               FontSize="16"
+               TextColor="#512BD4"
+               FontAttributes="Bold"
+               Margin="0,0,0,12" />
+
+        <CollectionView Grid.Row="2"
+                        x:Name="CategoriasCollection"
+                        SelectionMode="None">
+            <CollectionView.EmptyView>
+                <VerticalStackLayout Padding="20" HorizontalOptions="Center" VerticalOptions="Center">
+                    <Label Text="Nenhum produto cadastrado ainda."
+                           FontSize="18"
+                           HorizontalTextAlignment="Center" />
+                </VerticalStackLayout>
+            </CollectionView.EmptyView>
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Border Stroke="#DDDDDD"
+                            StrokeThickness="1"
+                            BackgroundColor="White"
+                            Padding="14"
+                            Margin="0,0,0,10">
+                        <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto">
+                            <Label Text="{Binding Categoria}"
+                                   FontSize="18"
+                                   FontAttributes="Bold"
+                                   TextColor="#212121" />
+
+                            <Label Grid.Row="1"
+                                   Text="{Binding QuantidadeItens, StringFormat='{0} item(ns)'}"
+                                   TextColor="#666666"
+                                   FontSize="13" />
+
+                            <Label Grid.Column="1"
+                                   Grid.RowSpan="2"
+                                   Text="{Binding Total, StringFormat='R$ {0:N2}'}"
+                                   FontSize="19"
+                                   FontAttributes="Bold"
+                                   TextColor="#512BD4"
+                                   VerticalOptions="Center" />
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
+</ContentPage>

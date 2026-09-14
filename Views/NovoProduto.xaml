@@ -24,6 +24,10 @@
                    Placeholder="Ex.: 25,90"
                    Keyboard="Numeric" />
 
+            <Label Text="Categoria" />
+            <Picker x:Name="CategoriaPicker"
+                    Title="Selecione a categoria" />
+
             <Button Text="Salvar"
                     Clicked="Salvar_Clicked"
                     HeightRequest="50" />

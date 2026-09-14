@@ -11,19 +11,26 @@ public partial class ListaProduto : ContentPage
     {
         InitializeComponent();
         ProdutosCollection.ItemsSource = _produtos;
+
+        var opcoes = new List<string> { Categorias.Todas };
+        opcoes.AddRange(Categorias.Lista);
+        CategoriaPicker.ItemsSource = opcoes;
+        CategoriaPicker.SelectedIndex = 0;
     }
 
     protected override async void OnAppearing()
     {
         base.OnAppearing();
-        await CarregarProdutos();
+        await AplicarFiltros();
     }
 
-    async Task CarregarProdutos()
+    async Task AplicarFiltros()
     {
         try
         {
-            AtualizarColecao(await App.Db.GetAll());
+            string texto = BuscaBar.Text ?? "";
+            string? categoria = CategoriaPicker.SelectedItem as string;
+            AtualizarColecao(await App.Db.Search(texto, categoria));
         }
         catch (Exception ex)
         {
@@ -33,14 +40,12 @@ public partial class ListaProduto : ContentPage
 
     async void BuscaBar_TextChanged(object sender, TextChangedEventArgs e)
     {
-        try
-        {
-            AtualizarColecao(await App.Db.Search(e.NewTextValue ?? ""));
-        }
-        catch (Exception ex)
-        {
-            await DisplayAlert("Ops", ex.Message, "OK");
-        }
+        await AplicarFiltros();
+    }
+
+    async void CategoriaPicker_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        await AplicarFiltros();
     }
 
     void AtualizarColecao(List<Produto> produtos)
@@ -53,6 +58,11 @@ public partial class ListaProduto : ContentPage
     async void Novo_Clicked(object sender, EventArgs e)
     {
         await Navigation.PushAsync(new NovoProduto());
+    }
+
+    async void Relatorio_Clicked(object sender, EventArgs e)
+    {
+        await Navigation.PushAsync(new RelatorioCategoria());
     }
 
     async void Editar_Clicked(object sender, EventArgs e)
@@ -77,7 +87,7 @@ public partial class ListaProduto : ContentPage
             try
             {
                 await App.Db.Delete(produto.Id);
-                await CarregarProdutos();
+                await AplicarFiltros();
             }
             catch (Exception ex)
             {

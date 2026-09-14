@@ -37,14 +37,32 @@ public class SQLiteDatabaseHelper
                     .ToListAsync();
     }
 
-    public Task<List<Produto>> Search(string q)
+    public Task<List<Produto>> Search(string q, string? categoria = null)
     {
-        if (string.IsNullOrWhiteSpace(q))
-            return GetAll();
+        var query = _conn.Table<Produto>();
 
-        return _conn.Table<Produto>()
-                    .Where(p => p.Descricao.Contains(q))
-                    .OrderBy(p => p.Descricao)
-                    .ToListAsync();
+        if (!string.IsNullOrWhiteSpace(q))
+            query = query.Where(p => p.Descricao.Contains(q));
+
+        if (!string.IsNullOrWhiteSpace(categoria) && categoria != Categorias.Todas)
+            query = query.Where(p => p.Categoria == categoria);
+
+        return query.OrderBy(p => p.Descricao).ToListAsync();
+    }
+
+    public async Task<List<CategoriaTotal>> GetTotalPorCategoria()
+    {
+        var produtos = await _conn.Table<Produto>().ToListAsync();
+
+        return produtos
+            .GroupBy(p => string.IsNullOrWhiteSpace(p.Categoria) ? "Outros" : p.Categoria)
+            .Select(g => new CategoriaTotal
+            {
+                Categoria = g.Key,
+                QuantidadeItens = g.Count(),
+                Total = g.Sum(p => p.Quantidade * p.Preco),
+            })
+            .OrderByDescending(c => c.Total)
+            .ToList();
     }
 }
